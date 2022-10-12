@@ -2,5 +2,8 @@
 *.pdf
 
 # folder
-__pycache__/
-.vscode/
+__pycache__
+.vscode
+
+# spesifict file
+tempCodeRunnerFile.py
