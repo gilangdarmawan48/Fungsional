@@ -1,2 +1,2 @@
-print(accounts)
-print(books)
+
+    print(" 3 | exit")

@@ -1,0 +1,6 @@
+# ignore ALL .pdf files
+*.pdf
+
+# folder
+__pycache__/
+.vscode/
