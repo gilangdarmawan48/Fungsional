@@ -44,9 +44,7 @@ def dashboard(user: User, books: dict, accounts: dict, books_temp={}):
 
     elif menu == "2":
         if(len(books_temp) < 3):
-
             books_temp.update(borrow_book(user, books))
-            print(books_temp)
 
             return dashboard(user, books.update(books_temp), accounts)
         else:
