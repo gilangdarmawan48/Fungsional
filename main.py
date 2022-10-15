@@ -1,10 +1,8 @@
-from getpass import getpass
-
 from utils import constant as const
-from utils.utils import message
 
 from model.user import User
 
+from function.cradential import login, register
 from function.book import input_book, borrow_book, return_book, shows_book
 
 base_accounts = {0: const.USER_ADMIN}
@@ -14,36 +12,6 @@ base_books = {
     2: const.BOOKS[2],
     3: const.BOOKS[3],
 }
-
-
-# authentication
-def login(accounts: dict):
-    print("\nlogin Page")
-    username = input('type username : ')
-    password = getpass('type password : ')
-
-    for account in accounts.values():
-        if username != account.username:
-            message("username tidak terdaftar")
-            login(accounts)
-        elif password != account.password:
-            message("password salah")
-            login(accounts)
-
-    return account
-
-
-def register(accounts: dict):
-    print("\nRegister Page")
-    username = input('type username : ')
-    password = getpass('type password : ')
-
-    for account in accounts.values():
-        if username == account.username:
-            message("account sudah terdaftar")
-            register(accounts)
-
-    return User(username, password)
 
 
 def dashboard(user: User, books: dict, accounts: dict, books_temp={}):
