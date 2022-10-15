@@ -4,6 +4,7 @@ from model.user import User
 
 from function.cradential import login, register
 from function.book import input_book, borrow_book, return_book, shows_book, update_book, delete_book
+from function.user import shows_user, create_user, delete_user
 
 base_accounts = {0: const.USER_ADMIN}
 base_books = {
@@ -69,16 +70,19 @@ def dashboard(user: User, books: dict, accounts: dict, books_temp={}):
         dashboard(user, books, accounts)
 
     elif menu == "7" and admin:
-        pass
+        shows_user(accounts)
+        dashboard(user, books, accounts)
 
     elif menu == "8" and admin:
-        pass
+        accounts.update(create_user(accounts))
+        dashboard(user, books, accounts)
 
     elif menu == "9" and admin:
         pass
 
     elif menu == "10" and admin:
-        pass
+        accounts = delete_user(accounts, user)
+        dashboard(user, books, accounts)
 
     elif menu == "11" and admin:
         home_page(accounts, books)
@@ -106,15 +110,14 @@ def home_page(accounts=dict, books=dict):
 
     if menu == "1":
         user = login(accounts)
-
         dashboard(user, books, accounts)
+
     elif menu == "2":
         user = register(accounts)
-        indx = len(accounts)
-
-        accounts[indx] = user
+        accounts.update({len(accounts): user})
 
         dashboard(user, books, accounts)
+
     elif menu == "3":
         exit()
     else:

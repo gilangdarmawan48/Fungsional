@@ -4,23 +4,26 @@ from model.user import User
 
 from utils.utils import message
 
+
 # authentication
-
-
 def login(accounts: dict):
+    error_message = ""
+
     print("\nlogin Page")
     username = input('type username : ')
     password = getpass('type password : ')
 
     for account in accounts.values():
+        if username == account.username:
+            return account
         if username != account.username:
-            message("username tidak terdaftar")
-            login(accounts)
+            error_message = "username tidak terdaftar"
         elif password != account.password:
-            message("password salah")
-            login(accounts)
+            error_message = "password salah"
 
-    return account
+    if (not error_message):
+        message(error_message)
+        login(accounts)
 
 
 def register(accounts: dict):
