@@ -15,7 +15,7 @@ def check_book(books: dict, case: str, value=any):
         if case == const.UPDATE_BOOK:
             if key == int(value):
                 return True
-        
+
         if case == const.DELETE_BOOK:
             if key == int(value):
                 return True
@@ -53,7 +53,7 @@ def borrow_book(user: User, books: dict):
             return {key: book}
 
     print(' e | buku tidak dapat dipinjam')
-    borrow_book(user, books)
+    return borrow_book(user, books)
 
 
 def return_book(user: User, books: dict):
@@ -73,7 +73,7 @@ def return_book(user: User, books: dict):
         return books
 
     print(' e | book not exist')
-    return_book(user, books)
+    return return_book(user, books)
 
 
 def input_book(books: dict):
@@ -86,7 +86,7 @@ def input_book(books: dict):
         print(" v | buku berhasil di inputkan")
     else:
         print(" e | book already exist")
-        input_book(books)
+        return input_book(books)
 
     return books
 
@@ -104,7 +104,7 @@ def update_book(books: dict):
         print(" v | buku berhasil di update")
     else:
         print(" e | book does not exist")
-        update_book(books)
+        return update_book(books)
 
     return books
 
@@ -115,12 +115,12 @@ def delete_book(books: dict):
 
     no_book = input('\npilih buku : ')
     already_exist = bool(check_book(books, const.DELETE_BOOK, no_book))
-    
+
     if already_exist:
         del books[int(no_book)]
         print(" v | buku berhasil di delete")
     else:
         print(" e | book does not exist")
-        delete_book(books)
+        return delete_book(books)
 
     return books

@@ -1,4 +1,5 @@
 from getpass import getpass
+import re
 
 from model.user import User
 
@@ -14,16 +15,17 @@ def login(accounts: dict):
     password = getpass('type password : ')
 
     for account in accounts.values():
-        if username == account.username:
+        if username == account.username and password == account.password:
             return account
-        if username != account.username:
-            error_message = "username tidak terdaftar"
-        elif password != account.password:
-            error_message = "password salah"
 
-    if (not error_message):
-        message(error_message)
-        login(accounts)
+    if username != account.username:
+        message("username tidak terdaftar")
+        return login(accounts)
+    if password != account.password:
+        message("password salah")
+        return login(accounts)
+
+    return account
 
 
 def register(accounts: dict):
@@ -34,6 +36,6 @@ def register(accounts: dict):
     for account in accounts.values():
         if username == account.username:
             message("account sudah terdaftar")
-            register(accounts)
+            return register(accounts)
 
     return User(username, password)
