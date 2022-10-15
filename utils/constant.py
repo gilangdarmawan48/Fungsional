@@ -14,3 +14,5 @@ BOOKS = [
 BORROW_BOOK = 'borrow book'
 RETURN_BOOK = 'return book'
 INPUT_BOOK = 'input book'
+UPDATE_BOOK = 'update book'
+DELETE_BOOK = 'delete book'

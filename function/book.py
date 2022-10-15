@@ -4,14 +4,7 @@ from model.book import Book
 
 
 # access library
-def shows_book(books: dict):
-    for key, book in books.items():
-        print(' ', key, ' | ', book.title)
-
-    return
-
-
-def check_book(books: dict, case: str, param=any, value={}):
+def check_book(books: dict, case: str, value=any):
     # validate
     for key, book in books.items():
         if case == const.BORROW_BOOK:
@@ -19,12 +12,20 @@ def check_book(books: dict, case: str, param=any, value={}):
                 print(' ', key, ' | ', book.title)
                 value[key] = book
 
+        if case == const.UPDATE_BOOK:
+            if key == int(value):
+                return True
+        
+        if case == const.DELETE_BOOK:
+            if key == int(value):
+                return True
+
         if case == const.INPUT_BOOK:
-            if str(param) == book.title:
+            if str(value) == book.title.lower():
                 return True
 
         if case == const.RETURN_BOOK:
-            if book.borrower == param:
+            if book.borrower == value:
                 print(' ', key, ' | ', book.title)
                 value[key] = book
 
@@ -32,6 +33,11 @@ def check_book(books: dict, case: str, param=any, value={}):
         return value
     if case == const.RETURN_BOOK:
         return value
+
+
+def shows_book(books: dict):
+    for key, book in books.items():
+        print(' ', key, ' | ', book.title)
 
 
 def borrow_book(user: User, books: dict):
@@ -70,7 +76,7 @@ def return_book(user: User, books: dict):
     return_book(user, books)
 
 
-def input_book(user: User, books: dict):
+def input_book(books: dict):
     print("\nInput Buku")
     book_title = input('judul buku : ')
     already_exist = bool(check_book(books, const.INPUT_BOOK, book_title))
@@ -80,6 +86,41 @@ def input_book(user: User, books: dict):
         print(" v | buku berhasil di inputkan")
     else:
         print(" e | book already exist")
-        input_book(user, books)
+        input_book(books)
+
+    return books
+
+
+def update_book(books: dict):
+    print("\nUpdate Buku")
+    shows_book(books)
+
+    no_book = input('\npilih buku : ')
+    already_exist = bool(check_book(books, const.UPDATE_BOOK, no_book))
+
+    if already_exist:
+        book_title = input('judul buku : ')
+        books[int(no_book)] = Book(book_title.title())
+        print(" v | buku berhasil di update")
+    else:
+        print(" e | book does not exist")
+        update_book(books)
+
+    return books
+
+
+def delete_book(books: dict):
+    print("\nDelete Buku")
+    shows_book(books)
+
+    no_book = input('\npilih buku : ')
+    already_exist = bool(check_book(books, const.DELETE_BOOK, no_book))
+    
+    if already_exist:
+        del books[int(no_book)]
+        print(" v | buku berhasil di delete")
+    else:
+        print(" e | book does not exist")
+        delete_book(books)
 
     return books

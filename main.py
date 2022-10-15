@@ -3,7 +3,7 @@ from utils import constant as const
 from model.user import User
 
 from function.cradential import login, register
-from function.book import input_book, borrow_book, return_book, shows_book
+from function.book import input_book, borrow_book, return_book, shows_book, update_book, delete_book
 
 base_accounts = {0: const.USER_ADMIN}
 base_books = {
@@ -53,25 +53,33 @@ def dashboard(user: User, books: dict, accounts: dict, books_temp={}):
             dashboard(user, books, accounts)
 
     elif menu == "3" and admin:
-        books = input_book(user, books)
+        books = input_book(books)
         dashboard(user, books, accounts)
 
     elif menu == "4" and admin:
-        pass
+        books = delete_book(books)
+        dashboard(user, books, accounts)
+
     elif menu == "5" and admin:
-        pass
+        books = update_book(books)
+        dashboard(user, books, accounts)
+
     elif menu == "6" and admin:
         books = return_book(user, books)
         dashboard(user, books, accounts)
 
     elif menu == "7" and admin:
         pass
+
     elif menu == "8" and admin:
         pass
+
     elif menu == "9" and admin:
         pass
+
     elif menu == "10" and admin:
         pass
+
     elif menu == "11" and admin:
         home_page(accounts, books)
 
