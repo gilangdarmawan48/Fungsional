@@ -8,6 +8,7 @@ BOOKS = [
     Book("Don't Just Book By His Cover"),
     Book("Pierre"),
     Book("Piknik Seru"),
+    Book("Kucing Orens"),
 ]
 
 BORROW_BOOK = 'borrow book'

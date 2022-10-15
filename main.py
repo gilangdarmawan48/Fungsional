@@ -1,15 +1,18 @@
 from getpass import getpass
 
 from utils import constant as const
-from utils import utils
+from utils.utils import message
+
 from model.user import User
-from model.book import Book
+
+from function.book import input_book, borrow_book, return_book, shows_book
 
 base_accounts = {0: const.USER_ADMIN}
 base_books = {
     0: const.BOOKS[0],
     1: const.BOOKS[1],
     2: const.BOOKS[2],
+    3: const.BOOKS[3],
 }
 
 
@@ -43,115 +46,73 @@ def register(accounts: dict):
     return User(username, password)
 
 
-# handling respon
-def message(msg):
-    print(str(msg))
-
-
-# access library
-def check_book(books: dict, case: str, param=any, value={}):
-    # validate
-    for key, book in books.items():
-        if case == const.BORROW_BOOK:
-            if book.borrower == User:
-                print(' ', key, ' | ', book.title)
-                value[key] = book
-
-        if case == const.INPUT_BOOK:
-            if str(param) == book.title:
-                return True
-
-        if case == const.RETURN_BOOK:
-            if book.borrower == param:
-                print(' ', key, ' | ', book.title)
-                value[key] = book
-
-    if case == const.BORROW_BOOK:
-        return value
-    if case == const.RETURN_BOOK:
-        return value
-
-
-def borrow_book(user: User, books: dict, accounts: dict):
-    print("\nPinjam Buku")
-    books_can_borrow = check_book(books, const.BORROW_BOOK)
-
-    pinjam_buku = input('\npilih buku : ')
-
-    for key, book in books_can_borrow.items():
-        if pinjam_buku == book.title or pinjam_buku == str(key):
-            books[key] = Book(book.title, user)
-            print(' v | buku berhasil di pinjam')
-            dashboard(user, books, accounts)
-
-    print(' e | buku tidak dapat dipinjam')
-    borrow_book(user, books, accounts)
-
-
-def return_book(user: User, books: dict, accounts: dict):
-    print("\nKembalikan Buku")
-    books_can_return = check_book(books, const.RETURN_BOOK, user)
-
-    if books_can_return:
-        book_title = input('\npilih buku : ')
-
-        for key, book in books_can_return.items():
-            if return_book == book.title or book_title == str(key):
-                books[key] = Book(book.title)
-                print(' v | buku berhasil di kembalikan')
-                dashboard(user, books, accounts)
-    else:
-        print(' e | empty borrowed books')
-        dashboard(user, books, accounts)
-
-    print(' e | book not exist')
-    return_book(user, books, accounts)
-
-
-def input_book(user: User, books: dict,  accounts: dict):
-    print("\nInput Buku")
-    book_title = input('judul buku : ')
-    already_exist = bool(check_book(books, const.INPUT_BOOK, book_title))
-
-    if not already_exist:
-        books[len(books)] = Book(book_title.title())
-        print(" v | buku berhasil di inputkan")
-    else:
-        print(" e | book already exist")
-        input_book(user, books, accounts)
-
-    dashboard(user, books, accounts)
-
-
-def dashboard(user: User, books: dict, accounts: dict):
-    print(user)
+def dashboard(user: User, books: dict, accounts: dict, books_temp={}):
     admin = user.role == const.ADMIN
 
     print("\nDashboard Page")
-    print(' 1 | pinjam buku')
+    print(' 1 | shows buku')
+    print(' 2 | pinjam buku')
 
     if admin:
-        print(' 2 | input buku')
+        print(' 3 | input buku')
+        print(' 4 | delet buku')
+        print(' 5 | updet buku')
+        print(' 6 | kembalikan buku')
+        print(' 7 | tampil user')
+        print(' 8 | create user')
+        print(' 9 | update user')
+        print(' 10 | delete user')
+        print(' 11 | logout')
+    else:
         print(' 3 | kembalikan buku')
         print(' 4 | logout')
-    else:
-        print(' 2 | kembalikan buku')
-        print(' 3 | logout')
 
     menu = input("\npilih ")
 
-    if menu == "1":
-        borrow_book(user, books, accounts)
-    elif menu == "2" and admin:
-        input_book(user, books, accounts)
-    elif menu == "3" and admin:
-        return_book(user, books, accounts)
-    elif menu == "4" and admin:
-        home_page(accounts, books)
+    if menu == "1" and admin:
+        shows_book(books)
+        dashboard(user, books, accounts)
+
     elif menu == "2":
-        return_book(user, books, accounts)
-    elif menu == "3":
+        if(len(books_temp) < 3):
+
+            books_temp.update(borrow_book(user, books))
+            print(books_temp)
+
+            dashboard(user, books.update(books_temp), accounts)
+        else:
+            print(" e | peminjaman maksimal 3 \n")
+            dashboard(user, books, accounts)
+
+    elif menu == "3" and admin:
+        books = input_book(user, books)
+        dashboard(user, books, accounts)
+
+    elif menu == "4" and admin:
+        pass
+    elif menu == "5" and admin:
+        pass
+    elif menu == "6" and admin:
+        books = return_book(user, books)
+        dashboard(user, books, accounts)
+
+    elif menu == "7" and admin:
+        pass
+    elif menu == "8" and admin:
+        pass
+    elif menu == "9" and admin:
+        pass
+    elif menu == "10" and admin:
+        pass
+    elif menu == "11" and admin:
         home_page(accounts, books)
+
+    elif menu == "3":
+        books = return_book(user, books)
+
+    elif menu == "4":
+        home_page(accounts, books)
+
     else:
         print(" e | inputan salah \n")
         dashboard(user, books, accounts)

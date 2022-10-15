@@ -6,3 +6,7 @@ def get_dict_key(val, my_dict: dict):
             return key
 
     return "key doesn't exist"
+
+# handling respon
+def message(msg):
+    print(str(msg))

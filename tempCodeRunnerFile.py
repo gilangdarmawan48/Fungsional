@@ -1,2 +1,2 @@
 
-    print(" 3 | exit")
+        pass
