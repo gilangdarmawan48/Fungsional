@@ -40,7 +40,7 @@ def dashboard(user: User, books: dict, accounts: dict, books_temp={}):
 
     if menu == "1" and admin:
         shows_book(books)
-        dashboard(user, books, accounts)
+        return dashboard(user, books, accounts)
 
     elif menu == "2":
         if(len(books_temp) < 3):
@@ -48,55 +48,56 @@ def dashboard(user: User, books: dict, accounts: dict, books_temp={}):
             books_temp.update(borrow_book(user, books))
             print(books_temp)
 
-            dashboard(user, books.update(books_temp), accounts)
+            return dashboard(user, books.update(books_temp), accounts)
         else:
             print(" e | peminjaman maksimal 3 \n")
-            dashboard(user, books, accounts)
+            return dashboard(user, books, accounts)
 
     elif menu == "3" and admin:
         books = input_book(books)
-        dashboard(user, books, accounts)
+        return dashboard(user, books, accounts)
 
     elif menu == "4" and admin:
         books = delete_book(books)
-        dashboard(user, books, accounts)
+        return dashboard(user, books, accounts)
 
     elif menu == "5" and admin:
         books = update_book(books)
-        dashboard(user, books, accounts)
+        return dashboard(user, books, accounts)
 
     elif menu == "6" and admin:
         books = return_book(user, books)
-        dashboard(user, books, accounts)
+        return dashboard(user, books, accounts)
 
     elif menu == "7" and admin:
         shows_user(accounts)
-        dashboard(user, books, accounts)
+        return dashboard(user, books, accounts)
 
     elif menu == "8" and admin:
         accounts.update(create_user(accounts))
-        dashboard(user, books, accounts)
+        return dashboard(user, books, accounts)
 
     elif menu == "9" and admin:
         accounts = update_user(accounts)
-        dashboard(user, books, accounts)
+        return dashboard(user, books, accounts)
 
     elif menu == "10" and admin:
         accounts = delete_user(accounts, user)
-        dashboard(user, books, accounts)
+        return dashboard(user, books, accounts)
 
     elif menu == "11" and admin:
-        home_page(accounts, books)
+        return home_page(accounts, books)
 
     elif menu == "3":
         books = return_book(user, books)
+        return dashboard(user, books, accounts)
 
     elif menu == "4":
-        home_page(accounts, books)
+        return home_page(accounts, books)
 
     else:
         print(" e | inputan salah \n")
-        dashboard(user, books, accounts)
+        return dashboard(user, books, accounts)
 
 
 # home_page
@@ -112,19 +113,19 @@ def home_page(accounts=dict, books=dict):
     if menu == "1":
         user = login(accounts)
         print(user)
-        dashboard(user, books, accounts)
+        return dashboard(user, books, accounts)
 
     elif menu == "2":
         user = register(accounts)
         accounts.update({len(accounts): user})
 
-        dashboard(user, books, accounts)
+        return dashboard(user, books, accounts)
 
     elif menu == "3":
         exit()
     else:
         print(" e | inputan salah \n")
-        home_page(accounts)
+        return home_page(accounts)
 
 
 # running
