@@ -38,15 +38,16 @@ def dashboard(user: User, books: dict, accounts: dict, books_temp={}):
 
     menu = input("\npilih ")
 
-    if menu == "1" and admin:
+    if menu == "1":
         shows_book(books)
         return dashboard(user, books, accounts)
 
     elif menu == "2":
         if(len(books_temp) < 3):
             books_temp.update(borrow_book(user, books))
+            books.update(books_temp)
 
-            return dashboard(user, books.update(books_temp), accounts)
+            return dashboard(user, books, accounts, books_temp=books_temp)
         else:
             print(" e | peminjaman maksimal 3 \n")
             return dashboard(user, books, accounts)
@@ -76,7 +77,7 @@ def dashboard(user: User, books: dict, accounts: dict, books_temp={}):
         return dashboard(user, books, accounts)
 
     elif menu == "9" and admin:
-        accounts = update_user(accounts)
+        accounts = update_user(accounts, user)
         return dashboard(user, books, accounts)
 
     elif menu == "10" and admin:
@@ -110,7 +111,6 @@ def home_page(accounts=dict, books=dict):
 
     if menu == "1":
         user = login(accounts)
-        print(user)
         return dashboard(user, books, accounts)
 
     elif menu == "2":

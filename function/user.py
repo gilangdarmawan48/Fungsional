@@ -24,19 +24,23 @@ def create_user(accounts: dict):
     return {len(accounts): User(username, password)}
 
 
-def update_user(accounts: dict):
-    update = False
+def update_user(accounts: dict, user: User):
+    accounts_tmp = {}
 
     print("\nUpdate User")
     for key, account in accounts.items():
-        print(' ', key, ' | ', account.username)
+        if account != user:
+            print(' ', key, ' | ', account.username)
+            accounts_tmp[key] = account
 
-    if len(accounts) > 0:
+    if len(accounts_tmp) > 0:
         no_user = input('\npilih user : ')
+        update = False
 
-        for key, account in accounts.items():
+        for key, account in accounts_tmp.items():
             if key == int(no_user):
                 update = True
+                break
 
         if (update):
             username = input('type username : ')
@@ -48,7 +52,7 @@ def update_user(accounts: dict):
             print(" v | account berhasil di update")
         else:
             print(" e | account does not exist")
-            return update_user(accounts)
+            return update_user(accounts, user)
     else:
         print(" e | accounts is empty")
 
@@ -56,21 +60,22 @@ def update_user(accounts: dict):
 
 
 def delete_user(accounts: dict, user: User):
-    delete = False
+    accounts_tmp = {}
 
     print("\nDelete User")
     for key, account in accounts.items():
         if account != user:
             print(' ', key, ' | ', account.username)
-            delete = True
+            accounts_tmp[key] = account
 
-    if delete:
+    if len(accounts_tmp) > 0:
         no_user = input('\npilih user : ')
         delete = False
 
-        for key, account in accounts.items():
+        for key, account in accounts_tmp.items():
             if key == int(no_user) and account != user:
                 delete = True
+                break
 
         if account == user:
             print(" e | account canot deleted")

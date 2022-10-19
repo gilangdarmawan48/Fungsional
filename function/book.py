@@ -4,7 +4,7 @@ from model.book import Book
 
 
 # access library
-def check_book(books: dict, case: str, value=any):
+def check_book(books: dict, case: str, user=User, value=any):
     # validate
     for key, book in books.items():
         if case == const.BORROW_BOOK:
@@ -25,7 +25,7 @@ def check_book(books: dict, case: str, value=any):
                 return True
 
         if case == const.RETURN_BOOK:
-            if book.borrower == value:
+            if book.borrower == user:
                 print(' ', key, ' | ', book.title)
                 value[key] = book
 
@@ -42,7 +42,7 @@ def shows_book(books: dict):
 
 def borrow_book(user: User, books: dict):
     print("\nPinjam Buku")
-    books_can_borrow = check_book(books, const.BORROW_BOOK)
+    books_can_borrow = check_book(books, const.BORROW_BOOK, value={})
 
     pinjam_buku = input('\npilih buku : ')
 
@@ -50,7 +50,8 @@ def borrow_book(user: User, books: dict):
         if pinjam_buku == book.title or pinjam_buku == str(key):
             books[key] = Book(book.title, user)
             print(' v | buku berhasil di pinjam')
-            return {key: book}
+
+            return {key: books[key]}
 
     print(' e | buku tidak dapat dipinjam')
     return borrow_book(user, books)
@@ -58,7 +59,7 @@ def borrow_book(user: User, books: dict):
 
 def return_book(user: User, books: dict):
     print("\nKembalikan Buku")
-    books_can_return = check_book(books, const.RETURN_BOOK, user)
+    books_can_return = check_book(books, const.RETURN_BOOK, user, value={})
 
     if books_can_return:
         book_title = input('\npilih buku : ')
@@ -79,7 +80,7 @@ def return_book(user: User, books: dict):
 def input_book(books: dict):
     print("\nInput Buku")
     book_title = input('judul buku : ')
-    already_exist = bool(check_book(books, const.INPUT_BOOK, book_title))
+    already_exist = bool(check_book(books, const.INPUT_BOOK, value=book_title))
 
     if not already_exist:
         books[len(books)] = Book(book_title.title())
@@ -96,7 +97,7 @@ def update_book(books: dict):
     shows_book(books)
 
     no_book = input('\npilih buku : ')
-    already_exist = bool(check_book(books, const.UPDATE_BOOK, no_book))
+    already_exist = bool(check_book(books, const.UPDATE_BOOK, value=no_book))
 
     if already_exist:
         book_title = input('judul buku : ')
@@ -114,7 +115,7 @@ def delete_book(books: dict):
     shows_book(books)
 
     no_book = input('\npilih buku : ')
-    already_exist = bool(check_book(books, const.DELETE_BOOK, no_book))
+    already_exist = bool(check_book(books, const.DELETE_BOOK, value=no_book))
 
     if already_exist:
         del books[int(no_book)]
